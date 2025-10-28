@@ -38,3 +38,6 @@ hs_err_pid*
 
 # Application specific
 /backend/src/main/resources/application-local.properties
+
+# Documentation
+README.md
