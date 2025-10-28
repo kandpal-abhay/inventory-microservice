@@ -1,0 +1,484 @@
+{
+  "info": {
+    "name": "Inventory Microservice API",
+    "description": "Multi-tenant Inventory Management Microservice API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Tenant Management",
+      "item": [
+        {
+          "name": "Create Tenant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": \"company-a\",\n  \"tenantName\": \"Company A Inc\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/tenants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "tenants"]
+            },
+            "description": "Creates a new tenant with dedicated schema"
+          }
+        },
+        {
+          "name": "Get All Tenants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/tenants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "tenants"]
+            }
+          }
+        },
+        {
+          "name": "Get Tenant by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/tenants/company-a",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "tenants", "company-a"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Tenant",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/tenants/company-a",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "tenants", "company-a"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Management",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a",
+                "description": "Tenant identifier"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"LAPTOP-001\",\n  \"name\": \"Dell XPS 15\",\n  \"description\": \"High-performance laptop\",\n  \"category\": \"Electronics\",\n  \"price\": 1499.99,\n  \"stockQuantity\": 50,\n  \"reorderLevel\": 10\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products?category=Electronics",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Electronics"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Active Products Only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products?activeOnly=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"],
+              "query": [
+                {
+                  "key": "activeOnly",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Product by SKU",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products/sku/LAPTOP-001",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "sku", "LAPTOP-001"]
+            }
+          }
+        },
+        {
+          "name": "Get Products Needing Reorder",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products/reorder-needed",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "reorder-needed"]
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"LAPTOP-001\",\n  \"name\": \"Dell XPS 15 Updated\",\n  \"description\": \"High-performance laptop - Updated\",\n  \"category\": \"Electronics\",\n  \"price\": 1599.99,\n  \"stockQuantity\": 50,\n  \"reorderLevel\": 15\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Stock - Restock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantityChange\": 20,\n  \"adjustmentType\": \"RESTOCK\",\n  \"reason\": \"Weekly restock from supplier\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products/1/stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1", "stock"]
+            },
+            "description": "Increase stock by 20 units"
+          }
+        },
+        {
+          "name": "Update Stock - Sale",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantityChange\": -5,\n  \"adjustmentType\": \"SALE\",\n  \"reason\": \"Customer purchase order #12345\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products/1/stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1", "stock"]
+            },
+            "description": "Decrease stock by 5 units (sale)"
+          }
+        },
+        {
+          "name": "Update Stock - Damage",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantityChange\": -2,\n  \"adjustmentType\": \"DAMAGE\",\n  \"reason\": \"Damaged during warehouse operations\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products/1/stock",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1", "stock"]
+            }
+          }
+        },
+        {
+          "name": "Get Stock History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products/1/stock-history",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1", "stock-history"]
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Multi-Tenancy Test",
+      "item": [
+        {
+          "name": "Create Second Tenant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenantId\": \"company-b\",\n  \"tenantName\": \"Company B Corp\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/tenants",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "tenants"]
+            }
+          }
+        },
+        {
+          "name": "Create Product for Company B",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-b"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"WIDGET-001\",\n  \"name\": \"Blue Widget\",\n  \"description\": \"Company B's product\",\n  \"category\": \"Widgets\",\n  \"price\": 29.99,\n  \"stockQuantity\": 100,\n  \"reorderLevel\": 20\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Products for Company B",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-b",
+                "description": "Should only return Company B's products"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"]
+            },
+            "description": "Verify tenant isolation - should only see Company B products"
+          }
+        },
+        {
+          "name": "Get Products for Company A",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Tenant-ID",
+                "value": "company-a",
+                "description": "Should only return Company A's products"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "products"]
+            },
+            "description": "Verify tenant isolation - should only see Company A products"
+          }
+        }
+      ]
+    }
+  ]
+}
